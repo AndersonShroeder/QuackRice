@@ -37,14 +37,15 @@ class Predictor:
         # Add noise to each plot with a given variance
         for i in self.xVals:
             if random.randint(0, 1) == 1:
-                self.yVals[i] += abs(random.randrange(-var, var))
+                self.yVals[i] = abs(
+                    self.yVals[i] + random.randrange(-var, var))
 
     def getYPred(self):
         # Get prediction array
         return list(self.yPredict)
 
 
-# pred = Predictor()
-# pred.train()
-# pred.addNoise(10)
-# pred.plot()
+pred = Predictor()
+pred.train()
+# pred.addNoise(1)
+pred.plot()
