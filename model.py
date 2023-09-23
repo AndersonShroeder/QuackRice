@@ -1,17 +1,8 @@
-import pandas as pd
 import numpy as np
 from sklearn import linear_model
 from sklearn.preprocessing import PolynomialFeatures
 import random
 import matplotlib.pyplot as plt
-from datetime import datetime, timedelta
-
-
-def interval_to_time(interval):
-    base_time = datetime.strptime("00:00", "%H:%M")
-    delta = timedelta(minutes=10)
-    target_time = base_time + delta * interval
-    return target_time.strftime("%H:%M")
 
 
 class Predictor:
