@@ -38,7 +38,7 @@ class Predictor:
         return self.yPredict
 
 
-pred = Predictor()
-pred.train()
+# pred = Predictor()
+# pred.train()
 # pred.addNoise(10)
-pred.plot()
+# pred.plot()
