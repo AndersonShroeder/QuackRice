@@ -9,7 +9,7 @@ class Predictor:
     def __init__(self):
         # Initialize default array, which will be overridden as user completes tasks
         self.xVals = np.array([i for i in range(144)]).reshape(-1, 1)
-        self.yVals = (10/275) * (self.xVals - 72)**2 + 10
+        self.yVals = (10/275) * (self.xVals - 72)**2 + 50
         self.yPredict = np.array(float)
 
     def train(self):
