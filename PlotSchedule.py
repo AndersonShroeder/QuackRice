@@ -8,7 +8,11 @@ def plot_schedule(prioritylist, timegraph):
     priority_counter = 1
     priority_copy = prioritylist.copy()
     while prioritylist != {}:
-        for task in priority_copy.keys():
+        current_list = []
+        for task in priority_copy:
+            if priority_copy[task] == priority_counter:
+                current_list.append(task)
+        for task in current_list:
             if priority_copy[task] == priority_counter:
                 is_valid_min = False
                 timecopy = timegraph.copy()
@@ -23,8 +27,8 @@ def plot_schedule(prioritylist, timegraph):
                 end_time = start_time + timegraph[task_time_index]
                 schedule[task] = (start_time, end_time)
                 markout_schedule(task_time_index, timegraph)
-                priority_counter += 1
                 del prioritylist[task]
+        priority_counter += 1
     return schedule
 
 
@@ -33,7 +37,7 @@ def get_time_step(timegraph):
 
 
 def markout_schedule(task_time_index, timegraph):
-    for i in range(0, min([math.ceil(timegraph[task_time_index]/get_time_step(timegraph)), len(timegraph)-task_time_index-1])):
+    for i in range(0, min([math.ceil(timegraph[task_time_index]/get_time_step(timegraph)), len(timegraph)-task_time_index])):
         timegraph[task_time_index + i] = 1440
 
 
@@ -55,7 +59,7 @@ def check_valid_min(task_time_index, timegraph):
     return True
 
 
-prioritylist = {"Study": 1, "Read": 2, "Class": 3, "Study2": 4, "Read2": 5, "Class2": 6,
+prioritylist = {"Study": 1, "Read": 2, "Class": 2, "Study2": 4, "Read2": 5, "Class2": 6,
                 "Study3": 7, "Read3": 8, "Class3": 9, "Study4": 10, "Read4": 11, "Class4": 12, "Study5": 13}
 timegraph = [150, 150, 150, 150, 150, 150, 145, 140, 120, 150, 150, 150]
 
