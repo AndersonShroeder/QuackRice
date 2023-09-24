@@ -43,8 +43,3 @@ def check_valid_min(task_time_index, timegraph):
         if timegraph[task_time_index + i] == 1440:
             return False
     return True
-
-prioritylist = {"Stroke": 1, "Goon": 2, "Bust": 3, "Stroke2": 4, "Goon2": 5, "Bust2": 6, "Stroke3": 7, "Goon3": 8, "Bust3": 9, "Stroke4": 10, "Goon4": 11, "Bust4": 12, "Stroke5": 13}  
-timegraph = [150, 150, 150, 150, 150, 150, 145, 140, 120, 150, 150, 150]
-
-print(plot_schedule(prioritylist, timegraph))

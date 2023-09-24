@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 from streamlit_timeline import st_timeline
+import PlotSchedule
+import model
+from datetime import datetime
 
 st.set_page_config(layout="wide")
 
@@ -10,6 +13,9 @@ class WebApp:
         self.current_df = None
         self.completed_df = None
         self.task_columns = ["Task Name", "Task Priority", "Active", "Completed"]
+        self.task_prio_values = {"Very High":1, "High":2, "Medium":3, "Low":4, "Very Low":5}
+        self.model = model.Predictor()
+        self.model.train()
 
 
     def new_task_column(self):
@@ -35,6 +41,7 @@ class WebApp:
 
     def active_task_column(self):
         with self.col2:
+
             current_col, completed_col = st.columns(2)
 
             with current_col:
@@ -44,19 +51,37 @@ class WebApp:
             with completed_col:
                 st.header("Completed Tasks")
                 st.dataframe(self.completed_df, hide_index = True)
-    
 
+            if st.button("Schedule!"):
+                dct = {}
+                for i in self.current_df.index:
+                    dct[self.current_df.loc[i]["Task Name"]] = self.task_prio_values[self.current_df.loc[i]["Task Priority"]]
+
+                self.plot_timeline(PlotSchedule.plot_schedule(dct, list(self.model.getYPred() * 10)))
+
+            
     def generate_timeline_contents(self, task_dict):
         items = []
         id = 0
+
+        # st.write(task_dict)
         
         for i in task_dict:
-            items.append({"id":id, "content": i, "start": task_dict[i][0], "end": task_dict[i][0]})
+            start_date = datetime.now().replace(hour=int(task_dict[i][0])//60, minute=int(task_dict[i][0])%60, second=0, microsecond=0)
+            end_date = datetime.now().replace(hour=int(task_dict[i][1])//60, minute=int(task_dict[i][1])%60, second=0, microsecond=0)
+            items.append({"id":id, "content": i, "start": start_date.strftime("%m/%d/%Y, %H:%M:%S"), "end": end_date.strftime("%m/%d/%Y, %H:%M:%S")})
+            id += 1
 
         return items
     
     def plot_timeline(self, task_dict):
-        timeline = st_timeline(self.generate_timeline_contents(task_dict), groups=[], options={}, height="300px")
+        st_timeline(self.generate_timeline_contents(task_dict), groups=[], options={}, height="300px")
+
+    def output_active_tasks(self):
+        return (self.current_df).to_dict('record')
+
+    def output_model_data(self):
+        pass
 
     def run(self):
         if 'tasks' not in st.session_state:
